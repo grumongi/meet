@@ -1,35 +1,25 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+// src/App.jsx
+import React, { useState } from 'react';
+import EventList from './components/EventList';
+import NumberOfEvents from './components/NumberOfEvents';
+import  mockData  from './mock-data'; 
+import events from './mock-data'; // or '../mock-data' in tests
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  const [events, setEvents] = useState(mockData[0].items || []);
+  const [numberOfEvents, setNumberOfEvents] = useState(32);
 
   return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+    <div className="App">
+      <div id="number-of-events">
+        <NumberOfEvents
+          numberOfEvents={numberOfEvents}
+          setNumberOfEvents={setNumberOfEvents}
+        />
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
-}
+      <EventList events={events.slice(0, numberOfEvents)} />
+    </div>
+  );
+};
 
-export default App
+export default App;
