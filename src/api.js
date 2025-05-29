@@ -38,7 +38,7 @@ export const getEvents = async () => {
 
  if (token) {
    removeQuery();
-   const url =  "https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/get-auth-url" + "/" + token;
+   const url =  "https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/get-events" + "/" + token;
    const response = await fetch(url);
    const result = await response.json();
    if (result) {
@@ -89,7 +89,7 @@ const removeQuery = () => {
 const getToken = async (code) => {
  const encodeCode = encodeURIComponent(code);
  const response = await fetch(
-   'https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/get-auth-url' + '/' + encodeCode
+   ' https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/token' + '/' + encodeCode
  );
  const { access_token } = await response.json();
  access_token && localStorage.setItem("access_token", access_token);
