@@ -1,25 +1,66 @@
-// src/App.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import EventList from './components/EventList';
+import CitySearch from './components/CitySearch';
 import NumberOfEvents from './components/NumberOfEvents';
-import  mockData  from './mock-data'; 
-import events from './mock-data'; // or '../mock-data' in tests
+import { getEvents, extractLocations } from './api';
+
+import './App.css';
 
 const App = () => {
-  const [events, setEvents] = useState(mockData[0].items || []);
-  const [numberOfEvents, setNumberOfEvents] = useState(32);
+  const [events, setEvents] = useState([]);
+  const [currentNOE, setCurrentNOE] = useState(32);
+  const [allLocations, setAllLocations] = useState([]);
+  const [currentCity, setCurrentCity] = useState("See all cities");
+
+
+useEffect(() => {
+  const fetchData = async () => {
+    const allEvents = await getEvents();
+    const filteredEvents = currentCity === "See all cities"
+      ? allEvents
+      : allEvents.filter(event => event.location === currentCity);
+    setEvents(filteredEvents.slice(0, currentNOE));
+    setAllLocations(extractLocations(allEvents));
+  };
+  fetchData();
+}, [currentCity, currentNOE]);
+
 
   return (
-    <div className="App">
-      <div id="number-of-events">
-        <NumberOfEvents
-          numberOfEvents={numberOfEvents}
-          setNumberOfEvents={setNumberOfEvents}
-        />
-      </div>
-      <EventList events={events.slice(0, numberOfEvents)} />
-    </div>
-  );
+   <div className="App">
+     <CitySearch allLocations={allLocations} setCurrentCity={setCurrentCity} />
+     <NumberOfEvents currentNOE={currentNOE} onNOEChange={setCurrentNOE} />
+     <EventList events={events} />
+   </div>
+ );
 };
 
 export default App;
+
+ //useEffect(() => {
+  //const fetchData = async () => {
+    //const allEvents = await getEvents();
+    //setEvents(allEvents.slice(0, currentNOE || 32));
+  
+  //};
+  //fetchData(); 
+//}, [currentNOE]);
+
+
+
+
+
+//return (
+   // <div className="App">
+     // <div id="number-of-events">
+       //<NumberOfEvents
+        //currentNOE={currentNOE}
+        //onNOEChange={setCurrentNOE}
+///>
+     // </div>
+      //<EventList events={events} />
+    //</div>
+  //;
+//};
+
+

@@ -1,30 +1,35 @@
-import React from 'react';
-import { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // eslint-disable-next-line react/prop-types
-const CitySearch = ({ allLocations }) => {
+const CitySearch = ({ allLocations, setCurrentCity }) => {
   const [showSuggestions, setShowSuggestions] = useState(false);
   const [query, setQuery] = useState("");
   const [suggestions, setSuggestions] = useState([]);
 
+  // UseEffect to initialize suggestions with allLocations when it's available
+  useEffect(() => {
+    setSuggestions(allLocations);
+  }, [allLocations]);
+
   const handleInputChanged = (event) => {
-  const value = event.target.value;
-  const filteredLocations = allLocations
-    ? allLocations.filter((location) =>
-        typeof location === 'string' &&
-        location.toLowerCase().includes(value.toLowerCase())
-      )
-    : [];
+    const value = event.target.value;
+    const filteredLocations = allLocations
+      ? allLocations.filter((location) =>
+          typeof location === "string" &&
+          location.toLowerCase().includes(value.toLowerCase())
+        )
+      : [];
 
-  setQuery(value);
-  setSuggestions(filteredLocations);
-};
-
-  const handleItemClicked = (event) => {
-    const value = event.target.textContent;
     setQuery(value);
-    setShowSuggestions(false); // Hide list after selecting
+    setSuggestions(filteredLocations);
   };
+
+ const handleItemClicked = (event) => {
+   const value = event.target.textContent;
+   setQuery(value);
+   setShowSuggestions(false);
+   setCurrentCity(value);
+ };
 
   return (
     <div id="city-search">
