@@ -1,13 +1,16 @@
- 
+import mockData from '../mock-data';
+
+jest.mock('../api', () => ({
+  getEvents: jest.fn(() => Promise.resolve(mockData[0].items)),
+  extractLocations: jest.fn(events => [...new Set(events.map(e => e.location))]),
+}));
 
 import { render, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
+import { describe, test, expect } from '@jest/globals';
 import App from '../App';
-import { describe, test, expect, beforeEach } from '@jest/globals';
-import mockData from '../mock-data';
-import { getEvents } from '../api'; // Import after the mock
-
+import { getEvents } from '../api'; 
 
 describe('<App /> integration tests', () => {
   test('Scenario 1: Default number of events is 32', async () => {
@@ -17,18 +20,19 @@ describe('<App /> integration tests', () => {
     expect(eventItems.length).toBe(Math.min(32, mockData[0].items.length));
   });
 
-  test('Scenario 2: User can change number of events', async () => {
+  test('Scenario 2: User can change number of events displayed', async () => {
     const user = userEvent.setup();
     const { getByLabelText, findAllByRole } = render(<App />);
-     const numberInput = getByLabelText(/number of events/i);
+    const numberInput = getByLabelText(/number of events/i);
 
-    await user.clear(numberInput);
-    await user.type(numberInput, '10');
+    // Clear the default value (32) and type "10"
+    await user.type(numberInput, '{backspace}{backspace}10');
 
-
+    // Wait for the event list to update
     const eventItems = await findAllByRole('listitem');
     expect(eventItems.length).toBe(10);
   });
+});
 
   test('Renders NumberOfEvents input box', () => {
     const { container } = render(<App />);
@@ -40,7 +44,6 @@ describe('<App /> integration tests', () => {
     const { container } = render(<App />);
     expect(container.querySelector('#event-list')).toBeInTheDocument();
   });
-});
 
 describe('<App /> integration', () => {
 

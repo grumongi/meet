@@ -1,4 +1,4 @@
-import { render } from '@testing-library/react';
+import { render,screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import React from 'react';
 import NumberOfEvents from '../components/NumberOfEvents';
@@ -22,15 +22,13 @@ describe('<NumberOfEvents /> component', () => {
   });
 
   test('allows user to change the number of events', async () => {
+  const mockSetNumberOfEvents = jest.fn();
+  render(<NumberOfEvents currentNOE={32} setCurrentNOE={mockSetNumberOfEvents} />);
+  const textbox = screen.getByRole('textbox');
   const user = userEvent.setup();
-  const mockSetNumberOfEvents = jest.fn(); 
-  const { getByRole } = render(
-    <NumberOfEvents currentNOE={32} onNOEChange={mockSetNumberOfEvents} />
-  );
-  const textbox = getByRole('textbox');
+
   await user.clear(textbox);
   await user.type(textbox, '10');
   expect(mockSetNumberOfEvents).toHaveBeenCalled();
 });
-
 });

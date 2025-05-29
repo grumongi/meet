@@ -1,10 +1,9 @@
 import React from 'react';
 
-const NumberOfEvents = ({ currentNOE, onNOEChange }) => {
+const NumberOfEvents = ({ currentNOE, setCurrentNOE }) => {
   const handleInputChanged = (event) => {
     const value = event.target.value;
-    // Always call onNOEChange, even if value is empty
-    onNOEChange(value === '' ? '' : parseInt(value, 10));
+    setCurrentNOE(value === '' ? '' : parseInt(value, 10));
   };
 
   return (
