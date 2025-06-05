@@ -37,30 +37,3 @@ useEffect(() => {
 
 export default App;
 
- //useEffect(() => {
-  //const fetchData = async () => {
-    //const allEvents = await getEvents();
-    //setEvents(allEvents.slice(0, currentNOE || 32));
-  
-  //};
-  //fetchData(); 
-//}, [currentNOE]);
-
-
-
-
-
-//return (
-   // <div className="App">
-     // <div id="number-of-events">
-       //<NumberOfEvents
-        //currentNOE={currentNOE}
-        //onNOEChange={setCurrentNOE}
-///>
-     // </div>
-      //<EventList events={events} />
-    //</div>
-  //;
-//};
-
-
