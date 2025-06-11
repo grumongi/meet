@@ -10,7 +10,7 @@ describe('<CitySearch /> component', () => {
   let CitySearchComponent;
 
   beforeEach(() => {
-    CitySearchComponent = render(<CitySearch allLocations={[]}/>);
+    CitySearchComponent = render(<CitySearch allLocations={[]} setCurrentCity={() => { }} setInfoAlert={() => { }}/>);
   });
 
   test('renders text input', () => {
@@ -39,7 +39,7 @@ test('updates list of suggestions correctly when user types in city textbox', as
   const allEvents = await getEvents();
   const allLocations = extractLocations(allEvents);
   const { queryByRole, queryAllByRole } = render(
-    <CitySearch allLocations={allLocations} />
+    <CitySearch allLocations={allLocations} setInfoAlert={() => { }} />
   );
 
   const cityTextBox = queryByRole('textbox');
@@ -67,6 +67,7 @@ test('renders the suggestion text in the textbox upon clicking on the suggestion
      <CitySearch
        allLocations={allLocations}
        setCurrentCity={() => { }}
+       setInfoAlert={() => { }}
      />
    );
 
