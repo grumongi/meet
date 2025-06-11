@@ -109,3 +109,11 @@ input[type="number"]:focus {
 .details-btn:hover {
   background-color: var(--secondary-color);
 }
+
+.alerts-container {
+ position: fixed;
+ top: 0px;
+ left: 20px;
+ width: 250px;
+ z-index: 1000;
+}
