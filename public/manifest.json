@@ -27,19 +27,6 @@
        "purpose": "maskable"
        }
    ],
-   "screenshots": [
-  {
-    "src": "screenshot1.png",
-    "sizes": "540x720",
-    "type": "image/png",
-    "form_factor": "wide"
-  },
-  {
-    "src": "screenshot2.png",
-    "sizes": "540x720",
-    "type": "image/png"
-  }
-],
    "start_url": ".",
    "display": "standalone",
    "theme_color": "#000000",
