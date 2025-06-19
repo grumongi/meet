@@ -1,6 +1,7 @@
 import mockData from './mock-data';
 
 
+
 /**
  *
  * @param {*} events:
@@ -28,26 +29,36 @@ const checkToken = async (accessToken) => {
  * This function will fetch the list of all events
  */
 export const getEvents = async () => {
- // NProgress.start(); //allows you to run end-to-end tests using mock API data, instead of having to get real data from the Google Calendar API
- if (window.location.href.startsWith("http://localhost")) {
-  //NProgress.done();//allows you to run end-to-end tests using mock API data, instead of having to get real data from the Google Calendar API
-   return mockData;
- }
+  //Check if user is offline
+  if (!navigator.onLine) {
+    const events = localStorage.getItem("lastEvents");
+    return events ? JSON.parse(events) : [];
+  }
 
+  // Use mockData for localhost
+  if (window.location.href.startsWith("http://localhost")) {
+    return mockData;
+  }
 
- const token = await getAccessToken();
+  const token = await getAccessToken();
 
+  if (token) {
+    removeQuery();
+    const url = "https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/get-events" + "/" + token;
+    const response = await fetch(url);
+    const result = await response.json();
 
- if (token) {
-   removeQuery();
-   const url =  "https://vq574vxar5.execute-api.us-west-1.amazonaws.com/dev/api/get-events" + "/" + token;
-   const response = await fetch(url);
-   const result = await response.json();
-   if (result) {
-     return result.events;
-   } else return null;
- }
+    if (result) {
+      //Save to localStorage
+     //NProgress.done(); 
+      localStorage.setItem("lastEvents", JSON.stringify(result.events));
+      return result.events;
+    } else {
+      return null;
+    }
+  }
 };
+
 
 export const getAccessToken = async () => {
   const accessToken = localStorage.getItem('access_token');
