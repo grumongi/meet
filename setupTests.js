@@ -1,5 +1,11 @@
 import '@testing-library/jest-dom';
 
+// Mock ResizeObserver for tests using recharts or ResponsiveContainer
+global.ResizeObserver = class {
+  observe() {}
+  unobserve() {}
+  disconnect() {}
+};
 
 // Here, add portions of the warning messages you want to intentionally prevent from appearing
 const MESSAGES_TO_IGNORE = [
